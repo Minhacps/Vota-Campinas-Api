@@ -15,7 +15,6 @@ var passport = require('passport');
 dotenv.load();
 
 // Controllers
-var HomeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
@@ -23,7 +22,6 @@ var contactController = require('./controllers/contact');
 require('./config/passport');
 
 var app = express();
-
 
 var hbs = exphbs.create({
   defaultLayout: 'main',
@@ -59,7 +57,10 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', HomeController.index);
+var api = {}
+
+api.usuarios
+
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
 app.get('/account', userController.ensureAuthenticated, userController.accountGet);
