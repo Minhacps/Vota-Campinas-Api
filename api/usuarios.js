@@ -96,7 +96,7 @@ router.post('/entrar', function(req, res, next) {
   })(req, res, next);
 });
 
-app.get('/logout', function(req, res) {
+router.get('/logout', function(req, res) {
   req.logout();
   res.status(200);
 });
