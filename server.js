@@ -61,7 +61,7 @@ var api = {}
 
 api.usuarios = require('./api/usuarios');
 
-app.use('/api/usuario', api.usuarios);
+app.use('/api/usuarios', api.usuarios);
 
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);

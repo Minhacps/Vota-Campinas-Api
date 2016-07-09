@@ -1,45 +1,75 @@
+var express = require('express');
+var router = express.Router();
 var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
-var User = require('../models/User');
+var moment = require('moment');
 
-var express = require('express');
-var router = express.Router();
+var User = require('../models/User');
+var Vereador = require('../models/Vereador');
+var Eleitor = require('../models/Eleitor');
+
 
 /**
  * POST /signup
  */
 router.post('/criar', function(req, res, next) {
-  req.assert('name', 'Name cannot be blank').notEmpty();
+  req.assert('nome', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
+  req.assert('dataNascimento', 'Email cannot be blank').notEmpty();
+  req.assert('senha', 'Password must be at least 4 characters long').len(4);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   var errors = req.validationErrors();
 
   if (errors) {
     req.flash('error', errors);
-    return res.redirect('/signup');
+    return res.status(400).json(errors);
   }
 
-  new User({
-    name: req.body.name,
+  var usuario = new User({
+    name: req.body.nome,
     email: req.body.email,
-    password: req.body.password
-  }).save()
-    .then(function(user) {
-        req.logIn(user, function(err) {
-          res.redirect('/');
-        });
-    })
-    .catch(function(err) {
-      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
-        req.flash('error', { msg: 'The email address you have entered is already associated with another account.' });
-        return res.redirect('/signup');
-      }
+    password: req.body.senha,
+    gender: req.body.sexo,
+    birthDates: moment(req.body.dataNascimento, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+  });
+
+  var logarUsuario = function () {
+    req.logIn(user, function(err) {
+      res.status(201).json(user);
     });
+  };
+
+  var removerUsuario = function () {
+    usuario.destroy();
+    return res.status(400).json({msg: 'Ocorreu um erro!'});
+  };
+
+  usuario.save().then(function(user) {
+    if (req.body.codigoJusticaEleitoral) {
+      new Vereador({
+        userId: user.id,
+        codigoJusticaEleitoral: req.body.codigoJusticaEleitoral,
+        partido: req.body.partido,
+        numero: req.body.numero,
+        descricao: req.body.descricao
+      }).save()
+      .then(logarUsuario)
+      .catch(removerUsuario);
+    } else {
+      new Eleitor({
+        userId: user.id
+      }).save()
+      .then(logarUsuario)
+      .catch(removerUsuario);
+    };
+  })
+  .catch(function(err) {
+    return res.status(400).json(err);
+  });
 });
 
 

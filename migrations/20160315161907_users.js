@@ -26,8 +26,10 @@ exports.up = function(knex, Promise) {
     }),
     knex.schema.createTable('vereadores', function(table) {
       table.integer('userId').primary().unsigned().references('id').inTable('users');
-      table.string('descricao');
       table.integer('codigoJusticaEleitoral');
+      table.string('partido');
+      table.integer('numero');
+      table.string('descricao');
       table.timestamps();
     })
   ]);
