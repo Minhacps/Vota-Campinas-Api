@@ -37,15 +37,19 @@ router.post('/criar', function(req, res, next) {
     birthDates: moment(req.body.dataNascimento, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
   });
 
-  var logarUsuario = function () {
-    req.logIn(user, function(err) {
-      res.status(201).json(user);
-    });
+  var logarUsuario = function (user) {
+    return () => {
+      req.logIn(user, function(err) {
+        return res.status(201).json(user);
+      });
+    };
   };
 
-  var removerUsuario = function () {
-    usuario.destroy();
-    return res.status(400).json({msg: 'Ocorreu um erro!'});
+  var removerUsuario = function (usuario) {
+    return () => {
+      usuario.destroy();
+      return res.status(400).json({msg: 'Ocorreu um erro!'});
+    }
   };
 
   usuario.save().then(function(user) {
@@ -57,14 +61,14 @@ router.post('/criar', function(req, res, next) {
         numero: req.body.numero,
         descricao: req.body.descricao
       }).save()
-      .then(logarUsuario)
-      .catch(removerUsuario);
+      .then(logarUsuario(user))
+      .catch(removerUsuario(usuario));
     } else {
       new Eleitor({
         userId: user.id
       }).save()
-      .then(logarUsuario)
-      .catch(removerUsuario);
+      .then(logarUsuario(user))
+      .catch(removerUsuario(usuario));
     };
   })
   .catch(function(err) {
