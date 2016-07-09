@@ -59,7 +59,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var api = {}
 
-api.usuarios
+api.usuarios = require('./api/usuarios');
+
+app.use('/api/usuario', api.usuarios);
 
 app.get('/contact', contactController.contactGet);
 app.post('/contact', contactController.contactPost);
