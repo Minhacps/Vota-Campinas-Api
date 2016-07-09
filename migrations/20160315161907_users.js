@@ -1,7 +1,7 @@
 exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTable('users', function(table) {
-      table.increments();
+      table.increments('id').primary();
       table.string('name');
       table.string('email').unique();
       table.string('password');
@@ -9,12 +9,25 @@ exports.up = function(knex, Promise) {
       table.dateTime('passwordResetExpires');
       table.string('gender');
       table.string('location');
-      table.string('website');
       table.string('picture');
       table.string('facebook');
       table.string('twitter');
       table.string('google');
       table.string('vk');
+      table.dateTime('birthDates');
+      table.integer('prioridade1');
+      table.integer('prioridade2');
+      table.integer('prioridade3');
+      table.timestamps();
+    }),
+    knex.schema.createTable('eleitores', function(table) {
+      table.integer('userId').primary().unsigned().references('id').inTable('users');
+      table.timestamps();
+    }),
+    knex.schema.createTable('vereadores', function(table) {
+      table.integer('userId').primary().unsigned().references('id').inTable('users');
+      table.string('descricao');
+      table.integer('codigoJusticaEleitoral');
       table.timestamps();
     })
   ]);
@@ -22,6 +35,8 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-    knex.schema.dropTable('users')
+    knex.schema.dropTable('users'),
+    knex.schema.dropTable('eleitores'),
+    knex.schema.dropTable('vereadores')
   ])
 };

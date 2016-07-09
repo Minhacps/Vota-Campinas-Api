@@ -1,10 +1,9 @@
 {
-  "name": "shy-frog",
+  "name": "green-forest",
   "version": "1.0.0",
   "description": "My app description",
   "scripts": {
-    "start": "node server.js",
-    "test": "mocha"
+    "start": "node server.js"
   },
   "dependencies": {
     "async": "^1.5.2",
@@ -28,13 +27,7 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4"
   },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0",
-    "supertest": "^1.2.0"
-  },
+  "devDependencies": {},
   "engines": {
     "node": "6.1.0"
   }
