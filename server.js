@@ -60,7 +60,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 var api = {}
 
 api.usuarios = require('./api/usuarios');
-
 app.use('/api/usuario', api.usuarios);
 
 app.get('/contact', contactController.contactGet);
@@ -71,7 +70,6 @@ app.delete('/account', userController.ensureAuthenticated, userController.accoun
 app.get('/signup', userController.signupGet);
 app.post('/signup', userController.signupPost);
 app.get('/login', userController.loginGet);
-app.post('/login', userController.loginPost);
 app.get('/forgot', userController.forgotGet);
 app.post('/forgot', userController.forgotPost);
 app.get('/reset/:token', userController.resetGet);
