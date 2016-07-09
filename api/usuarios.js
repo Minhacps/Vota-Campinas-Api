@@ -10,10 +10,6 @@ var User = require('../models/User');
 var Vereador = require('../models/Vereador');
 var Eleitor = require('../models/Eleitor');
 
-
-/**
- * POST /signup
- */
 router.post('/criar', function(req, res, next) {
   req.assert('nome', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
@@ -77,6 +73,7 @@ router.post('/criar', function(req, res, next) {
 });
 
 router.post('/entrar', function(req, res, next) {
+  console.log(req.body)
   req.assert('email', 'Email inválido').isEmail();
   req.assert('email', 'Email não pode ser em branco').notEmpty();
   req.assert('password', 'Senha não pode ser em branco').notEmpty();
@@ -95,7 +92,7 @@ router.post('/entrar', function(req, res, next) {
       return res.status(500).json(info);
     }
     req.logIn(user, function(err) {
-      res.status(200);
+      res.status(200).json({msg: 'Usuário autenticado'});
     });
   })(req, res, next);
 });
@@ -105,9 +102,7 @@ router.get('/logout', function(req, res) {
   res.status(200);
 });
 
-
 module.exports = router;
-
 
 // /**
 //  * Login required middleware
