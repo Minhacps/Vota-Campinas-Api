@@ -60,7 +60,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 var api = {}
 
 api.usuarios = require('./api/usuarios');
-
 app.use('/api/usuarios', api.usuarios);
 
 app.get('/contact', contactController.contactGet);
@@ -70,13 +69,10 @@ app.put('/account', userController.ensureAuthenticated, userController.accountPu
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
 app.get('/signup', userController.signupGet);
 app.post('/signup', userController.signupPost);
-app.get('/login', userController.loginGet);
-app.post('/login', userController.loginPost);
 app.get('/forgot', userController.forgotGet);
 app.post('/forgot', userController.forgotPost);
 app.get('/reset/:token', userController.resetGet);
 app.post('/reset/:token', userController.resetPost);
-app.get('/logout', userController.logout);
 app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));

@@ -72,6 +72,35 @@ router.post('/criar', function(req, res, next) {
   });
 });
 
+router.post('/entrar', function(req, res, next) {
+  req.assert('email', 'Email inválido').isEmail();
+  req.assert('email', 'Email não pode ser em branco').notEmpty();
+  req.assert('password', 'Senha não pode ser em branco').notEmpty();
+  req.sanitize('email').normalizeEmail({ remove_dots: false });
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('error', errors);
+    return res.status(400).json(errors);
+  }
+
+  passport.authenticate('local', function(err, user, info) {
+    if (!user) {
+      req.flash('error', info);
+      return res.status(500).json(info);
+    }
+    req.logIn(user, function(err) {
+      res.status(200);
+    });
+  })(req, res, next);
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.status(200);
+});
+
 
 module.exports = router;
 
@@ -85,41 +114,6 @@ module.exports = router;
 //   } else {
 //     res.redirect('/login');
 //   }
-// };
-//
-// /**
-//  * POST /login
-//  */
-// exports.loginPost = function(req, res, next) {
-//   req.assert('email', 'Email is not valid').isEmail();
-//   req.assert('email', 'Email cannot be blank').notEmpty();
-//   req.assert('password', 'Password cannot be blank').notEmpty();
-//   req.sanitize('email').normalizeEmail({ remove_dots: false });
-//
-//   var errors = req.validationErrors();
-//
-//   if (errors) {
-//     req.flash('error', errors);
-//     return res.redirect('/login');
-//   }
-//
-//   passport.authenticate('local', function(err, user, info) {
-//     if (!user) {
-//       req.flash('error', info);
-//       return res.redirect('/login')
-//     }
-//     req.logIn(user, function(err) {
-//       res.redirect('/');
-//     });
-//   })(req, res, next);
-// };
-//
-// /**
-//  * GET /logout
-//  */
-// exports.logout = function(req, res) {
-//   req.logout();
-//   res.redirect('/');
 // };
 //
 // /**
