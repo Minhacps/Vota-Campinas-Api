@@ -1,7 +1,7 @@
 {
-  "name": "shy-frog",
-  "version": "1.0.0",
-  "description": "My app description",
+  "name": "vota-campinas-api",
+  "version": "0.0.1",
+  "description": "API do Vota Campinas",
   "scripts": {
     "start": "node server.js",
     "test": "mocha"
