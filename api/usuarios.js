@@ -43,25 +43,25 @@ router.post('/criar', function(req, res, next) {
 });
 
 router.post('/entrar', function(req, res, next) {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('email', 'Email cannot be blank').notEmpty();
-  req.assert('password', 'Password cannot be blank').notEmpty();
+  req.assert('email', 'Email inválido').isEmail();
+  req.assert('email', 'Email não pode ser em branco').notEmpty();
+  req.assert('password', 'Senha não pode ser em branca').notEmpty();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   var errors = req.validationErrors();
 
   if (errors) {
     req.flash('error', errors);
-    return res.redirect('/login');
+    return res.status(400).json(errors);
   }
 
   passport.authenticate('local', function(err, user, info) {
     if (!user) {
       req.flash('error', info);
-      return res.redirect('/login')
+      return res.status(500).json(info);
     }
     req.logIn(user, function(err) {
-      res.redirect('/');
+      res.status(200);
     });
   })(req, res, next);
 });
