@@ -60,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var api = {}
 
 api.usuarios = require('./api/usuarios');
-app.use('/api/usuario', api.usuarios);
+app.use('/api/usuarios', api.usuarios);
 
 // app.get('/forgot', userController.forgotGet);
 // app.post('/forgot', userController.forgotPost);
