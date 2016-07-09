@@ -62,22 +62,15 @@ var api = {}
 api.usuarios = require('./api/usuarios');
 app.use('/api/usuario', api.usuarios);
 
-app.get('/contact', contactController.contactGet);
-app.post('/contact', contactController.contactPost);
-app.get('/account', userController.ensureAuthenticated, userController.accountGet);
-app.put('/account', userController.ensureAuthenticated, userController.accountPut);
-app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
-app.get('/signup', userController.signupGet);
-app.post('/signup', userController.signupPost);
-app.get('/forgot', userController.forgotGet);
-app.post('/forgot', userController.forgotPost);
-app.get('/reset/:token', userController.resetGet);
-app.post('/reset/:token', userController.resetPost);
-app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));
-app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));
+// app.get('/forgot', userController.forgotGet);
+// app.post('/forgot', userController.forgotPost);
+// app.get('/reset/:token', userController.resetGet);
+// app.post('/reset/:token', userController.resetPost);
+// app.get('/unlink/:provider', userController.ensureAuthenticated, userController.unlink);
+// app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
+// app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }));
+// app.get('/auth/twitter', passport.authenticate('twitter'));
+// app.get('/auth/twitter/callback', passport.authenticate('twitter', { successRedirect: '/', failureRedirect: '/login' }));
 
 // Production error handler
 if (app.get('env') === 'production') {
