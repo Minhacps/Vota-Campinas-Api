@@ -45,7 +45,7 @@ router.post('/criar', function(req, res, next) {
 router.post('/entrar', function(req, res, next) {
   req.assert('email', 'Email inválido').isEmail();
   req.assert('email', 'Email não pode ser em branco').notEmpty();
-  req.assert('password', 'Senha não pode ser em branca').notEmpty();
+  req.assert('password', 'Senha não pode ser em branco').notEmpty();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   var errors = req.validationErrors();
